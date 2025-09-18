@@ -1,0 +1,72 @@
+document.addEventListener('DOMContentLoaded', () => {
+    const portada = document.querySelector('.portada');
+    const albumContainer = document.querySelector('.album-container');
+    const musica = document.getElementById('musica-fondo');
+    const finalMessage = document.getElementById('final-message');
+
+    const oraciones = [
+        "Hoy quiero agradecerte por todo lo que significas en mi vida.",
+        "Cada recuerdo que compartimos lo llevo guardado como un tesoro en mi mente.",
+        "Tu presencia marcó mi historia y eso nunca se borrará.",
+        "Gracias por tus sonrisas, tus palabras y los momentos que me hicieron sentir feliz.",
+        "No guardo rencor, porque contigo aprendí y crecí de una forma especial.",
+        "Cada instante a tu lado dejó una huella que llevaré siempre conmigo.",
+        "Los recuerdos permanecen intactos.",
+        "Me quedo con lo bueno, con lo sincero y con lo verdadero de lo que vivimos.",
+        "Tus gestos, tus miradas y tus abrazos seguirán acompañándome en el corazón.",
+        "Gracias por enseñarme lo valioso de amar sin medida.",
+        "Lo nuestro fue único, y eso lo recordaré siempre con gratitud.",
+        "No hay dolor cuando pienso en ti, solo cariño y recuerdos imborrables.",
+        "En lo más profundo de mi corazón tendrás un lugar que nadie podrá ocupar.",
+        "Te deseo lo mejor en cada paso que des, porque lo mereces.",
+        "Hoy, más que nunca quiero decirte gracias por haber sido parte de mi vida."
+    ];
+    
+    const totalPhotos = 15;
+    let currentPhotoIndex = 0;
+
+    // Crea los contenedores para cada foto y oración
+    for (let i = 0; i < totalPhotos; i++) {
+        const imageContainer = document.createElement('div');
+        imageContainer.className = 'image-container';
+
+        const img = document.createElement('img');
+        img.src = `fotos/foto${i + 1}.jpg`; 
+        img.alt = `Foto ${i + 1}`;
+        imageContainer.appendChild(img);
+
+        const oracion = document.createElement('p');
+        oracion.className = 'oracion';
+        oracion.textContent = oraciones[i];
+        imageContainer.appendChild(oracion);
+
+        albumContainer.appendChild(imageContainer);
+    }
+
+    const imageContainers = document.querySelectorAll('.image-container');
+
+    function showNextPhoto() {
+        if (currentPhotoIndex > 0) {
+            imageContainers[currentPhotoIndex - 1].classList.remove('active');
+        }
+
+        if (currentPhotoIndex < totalPhotos) {
+            imageContainers[currentPhotoIndex].classList.add('active');
+            currentPhotoIndex++;
+        } else {
+            clearInterval(slideshowInterval);
+            albumContainer.style.display = 'none';
+            finalMessage.style.display = 'flex';
+        }
+    }
+
+    let slideshowInterval;
+    portada.addEventListener('click', () => {
+        musica.play();
+        portada.classList.add('hidden');
+        setTimeout(() => {
+            showNextPhoto();
+            slideshowInterval = setInterval(showNextPhoto, 5000); // 5 segundos
+        }, 1000);
+    });
+});
